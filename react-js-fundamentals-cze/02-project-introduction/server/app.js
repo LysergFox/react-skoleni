@@ -6,7 +6,6 @@ const studentRouter = require("./controller/student-controller");
 const classroomRouter = require("./controller/classroom-controller");
 const subjectRouter = require("./controller/subject-controller");
 const gradeRouter = require("./controller/grade-controller");
-const {render} = require("express/lib/application");
 
 //inicializace nového Express.js serveru
 const app = express();
