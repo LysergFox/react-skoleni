@@ -27,20 +27,10 @@ function ModalComponent(props) {
             rgb: 'rgb(230, 216, 179)',
         },
         {
-            name: 'yellow',
-            hex: '#dbb05a',
-            rgb: 'rgb(219, 176, 90)',
-        },
-        {
-            name: 'orange',
-            hex: '#c27947',
-            rgb: 'rgb(194, 121, 71)',
-        },
-        {
-            name: 'red',
-            hex: '#b94f40',
-            rgb: 'rgb(185, 79, 64)',
-        },
+            name: 'grey',
+            hex: '#333333',
+            rgb: 'rgb(51, 51, 51)',
+        }
     ];
 
     return (

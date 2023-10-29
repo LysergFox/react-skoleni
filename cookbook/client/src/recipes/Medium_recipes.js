@@ -2,59 +2,117 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import '../styles/RecipeStyles.css';
 
-function Medium_Recipes({ searchTerm }) {
+function Medium_Recipes(props) {
     const [view, setView] = useState('small');
-
+    const ingredients = props.ingredients;
+    let ingredientName = '';
     const toggleView = (newView) => {
         setView(newView);
     };
 
-    const [recipes, setRecipes] = useState([
-        {
-            id: 1,
-            title: 'Salát z naklíčené čočky',
-            description: 'Mrkev, okurku a papriku nakrájejte na malé kostičky a dejte do větší mísy spolu s naklíčenou čočkou. Cibuli nakrájejte najemno a přidejte k zelenině. Přisypte nasekanou petrželku. V misce nebo hrníčku důkladně promíchejte lák z okurek, olivový olej a med. Zálivku nalijte do mísy a důkladně promíchejte. Na závěr dochuťte solí a pepřem.',
-            image: 'cocka.jpeg',
-        },
-        {
-            id: 2,
-            title: 'Placičky',
-            description: 'Cibuli oloupejte a nastrouhejte nahrubo. Mrkev důkladně umyjte a nastrouhejte najemno spolu s česnekem. V míse smíchejte vločky, cibuli, mrkev, česnek a koření. Přidejte strouhanku a důkladně promíchejte, ideálně rukou tak, aby vznikla jednotná směs. Pokud je směs příliš suchá, přidejte trošku vody, pokud je příliš mokrá, přidejte trošku strouhanky. Na pánvi rozpalte olej, ze směsi vytvarujte malé placičky a smažte z obou stran dozlatova.',
-            image: 'placicky.jpg',
-        },
-        {
-            id: 3,
-            title: 'Barbecue burger ze zbylého kuřete',
-            description: 'Rozehřejte troubu na 240 °C. Obrané drůbeží maso natrhejte na vlákna, zamíchejte s barbecue omáčkou a rozprostřete do pekáčku. Dejte do trouby a pečte asi 10 minut. Rozpůlené bulky opečte na rozpálené pánvi na sucho z obou stran. Limetu umyjte, nastrouhejte kůru, šťávu vymačkejte a obojí smíchejte s majonézou. Pomocí škrabky udělejte z mrkve tenké proužky. Přendejte je do misky, přidejte špetku soli a pepře a pár kapek limety a promíchejte. Začněte skládat burger. Obě půlky bulek pomažte limetovou majonézou. Na spodní polovinu bulky navrstvěte natrhaný koriandr, na plátky nasekanou chilli papričku, mrkvové proužky, tenká kolečka šalotky a plátek rajčete. Nakonec přidejte vrstvu zapečeného bbq kuřete a plátek cheddaru. Přiklopte vrchní polovinou bulky a podávejte.',
-            image: 'burger.png',
-        },
-    ]);
+    const filteredRecipes = props.recipes.filter(
+        (recipes) =>
+            recipes.name.toLowerCase().includes(props.searchTerm.toLowerCase()) ||
+            recipes.description.toLowerCase().includes(props.searchTerm.toLowerCase()) ||
+            recipes.ingredients.some((ingredient) => findIngredient(ingredient.id).name.toLowerCase().includes(props.searchTerm.toLowerCase())
+            ));
 
-    const filteredRecipes = recipes.filter(
-        (recipe) =>
-            recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    function findIngredient(id) {
+        ingredientName = ingredients.find(item => item.id === id);
+        return ingredientName;
+    }
+
+    if (props.viewMode === 'table') {
+        return (
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Ingredients</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredRecipes.map((recipes) => (
+                        <tr key={recipes.id}>
+                            <td>{recipes.name}</td>
+                            <td>{recipes.description || 'No description available'}</td>
+                            <td>
+                                <ul>
+                                    {recipes.ingredients.map((ingredient) => (
+                                        <li key={ingredient.id}>
+                                            {findIngredient(ingredient.id).name}{' '}
+                                            {ingredient.amount}{' '}
+                                            {ingredient.unit}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
 
     return (
         <div>
             <div className="card-container">
-                {filteredRecipes.map((recipe) => (
+                {filteredRecipes.map((recipes) => (
                     <Card
-                        key={recipe.id}
+                        key={recipes.id}
                         className={view === 'large' ? 'card' : 'small-view'}
                         onClick={() => toggleView(view === 'small' ? 'large' : 'small')}
                     >
                         <Card.Img
                             variant="top"
-                            src={recipe.image}
+                            src={recipes.imgUri}
                             className="img"
                         />
-                        <Card.Header className="header">{recipe.title}</Card.Header>
+                        <Card.Header className="header">{recipes.name}</Card.Header>
                         <Card.Body>
                             <Card.Text className="text">
-                                {view === 'large' ? recipe.description : recipe.description.split('.')[0] + '...'}
+                                {recipes.description ? (
+                                    view === 'large'
+                                        ? recipes.description
+                                        : recipes.description.split('.')[0] + '...'
+                                ) : (
+                                    'No description available'
+                                )}
                             </Card.Text>
+                            {props.viewMode === 'table' && (
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Amount</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {recipes.ingredients.map((ingredient) => (
+                                        <tr key={ingredient.id}>
+                                            <td>{findIngredient(ingredient.id).name}</td>
+                                            <td>{ingredient.amount}</td>
+                                            <td>{ingredient.unit}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            )}
+                            {props.viewMode === 'cards' && view === 'large' && (
+                                <Card.Text className="text">
+                                    {recipes.ingredients.map((ingredient) => (
+                                        <div key={ingredient.id}>
+                                            {findIngredient(ingredient.id).name}{' '}
+                                            {ingredient.amount}{' '}
+                                            {ingredient.unit}
+                                        </div>
+                                    ))}
+                                </Card.Text>
+                            )}
                         </Card.Body>
                     </Card>
                 ))}

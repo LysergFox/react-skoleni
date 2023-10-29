@@ -8,8 +8,9 @@
 .recipe-container {
     flex: 1;
     overflow-y: auto;
-    margin-top: 100px;
+    margin-top: 80px;
     margin-left: 60px;
+    margin-bottom: 60px;
 }
 
 .recipe-container.hidden {
@@ -21,8 +22,8 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: #40667a;
-    color: #fff;
+    background-color: #333333;
+    color: #e6d8b3;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,15 +31,42 @@
     z-index: 2;
 }
 
+.app-title{
+    font-size: 3rem;
+    margin: 0;
+    color: #e6d8b3;
+}
+
 
 .search-bar {
-    width: 200px;
+    height: 20px;
+    width: 300px;
     padding: 5px;
     border: none;
     background-color: #7eb1af;
-    color: #fff;
+    color: #344b56;
     border-radius: 5px;
     margin-left: auto;
+    *::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:    #60849a;
+    }
+    *:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    #60849a;
+        opacity:  1;
+    }
+    *::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    #60849a;
+        opacity:  1;
+    }
+    *:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color:    #60849a;
+    }
+    *::-ms-input-placeholder { /* Microsoft Edge */
+        color:    #60849a;
+    }
+    *::placeholder { /* Most modern browsers support this now. */
+        color:    #60849a;
+    }
 }
 
 .app-footer {
@@ -46,11 +74,42 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #40667a;
-    color: #fff;
+    background-color: #333333;
+    color: #e6d8b3;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
     z-index: 1;
+}
+
+.button-view{
+    margin: 1rem;
+    background-color: #7eb1af;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.icon-view{
+    width: 30px;
+    height: 30px;
+    margin: -0.4rem;
+}
+
+.icon-view:hover{
+    cursor: pointer;
+}
+
+.icon-pallete{
+    width: 20px;
+    height: 20px;
+    margin: -0.4rem;
+}
+
+.icon-pallete:hover{
+    cursor: pointer;
+}
+
+.copyright{
+    margin: 1rem;
 }

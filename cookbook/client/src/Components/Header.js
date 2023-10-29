@@ -1,7 +1,9 @@
 import React from 'react';
 import '../styles/AppStyle.css'
+import Button from "react-bootstrap/Button";
+import {Image} from "react-bootstrap";
 
-function Header({ searchTerm, onSearch }) {
+function Header({ searchTerm, onSearch, toggleViewMode }) {
     return (
         <header className="app-header">
             <h1 className="app-title">Rádoby kuchařka</h1>
@@ -12,6 +14,7 @@ function Header({ searchTerm, onSearch }) {
                 onChange={onSearch}
                 className={'search-bar'}
             />
+            <Button className="button-view" onClick={toggleViewMode}><Image src={process.env.PUBLIC_URL + '/view.png'} alt="ToggleView" className="icon-view"></Image></Button>
         </header>
     );
 }
