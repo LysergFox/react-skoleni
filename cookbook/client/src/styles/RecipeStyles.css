@@ -23,7 +23,7 @@
     border: 2px solid #40667a;
     border-radius: 10px;
     color: #e6d8b3;
-    font-size: 2rem;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -44,7 +44,7 @@
 }
 
 .small-view {
-    height: 30rem;
+    height: 23rem;
     width: 30%;
     border: 5px solid #40667a;
     border-radius: 10px;
