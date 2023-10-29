@@ -7,6 +7,7 @@ function Header({ searchTerm, onSearch, toggleViewMode }) {
     return (
         <header className="app-header">
             <h1 className="app-title">Rádoby kuchařka</h1>
+            <Button className="button-view" onClick={toggleViewMode}><Image src={process.env.PUBLIC_URL + '/view.png'} alt="ToggleView" className="icon-view"></Image></Button>
             <input
                 type="text"
                 placeholder="Search Recipes"
@@ -14,7 +15,6 @@ function Header({ searchTerm, onSearch, toggleViewMode }) {
                 onChange={onSearch}
                 className={'search-bar'}
             />
-            <Button className="button-view" onClick={toggleViewMode}><Image src={process.env.PUBLIC_URL + '/view.png'} alt="ToggleView" className="icon-view"></Image></Button>
         </header>
     );
 }

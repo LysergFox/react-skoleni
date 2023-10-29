@@ -83,11 +83,17 @@
 }
 
 .button-view{
-    margin: 1rem;
     background-color: #7eb1af;
     border-radius: 5px;
     width: 30px;
     height: 30px;
+    margin-left: 1290px;
+    border: none !important;
+}
+
+.button-view:hover{
+    cursor: pointer;
+    background-color: #60849a;;
 }
 
 .icon-view{
@@ -96,18 +102,24 @@
     margin: -0.4rem;
 }
 
-.icon-view:hover{
+.button-pallete{
+    margin: 1rem;
+    background-color: #7eb1af;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    border: none !important;
+}
+
+.button-pallete:hover{
     cursor: pointer;
+    background-color: #60849a;;
 }
 
 .icon-pallete{
     width: 20px;
     height: 20px;
     margin: -0.4rem;
-}
-
-.icon-pallete:hover{
-    cursor: pointer;
 }
 
 .copyright{
