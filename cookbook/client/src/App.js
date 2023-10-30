@@ -3,6 +3,7 @@ import ModalColor from './Components/ModalColor';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import MediumRecipes from './recipes/Medium_recipes';
+import './styles/SvgSprinner.css';
 
 function App() {
     const [showColorTheoryModal, setShowColorTheoryModal] = useState(false);
@@ -50,7 +51,9 @@ function App() {
     function getChild() {
         switch (repipesLoadCall.state && ingredientsLoadCall.state) {
             case "pending":
-                return <div>Loading...</div>;
+               return <svg className="spinner" viewBox="0 0 50 50">
+                        <circle className="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+               </svg>
             case "error":
                 return <div>Error: {repipesLoadCall.error.message}</div>;
             case "success":
