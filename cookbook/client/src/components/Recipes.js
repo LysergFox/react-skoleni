@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import '../styles/RecipeStyles.css';
 
-function Medium_Recipes(props) {
+function Recipes(props) {
     const [view, setView] = useState('small');
     const ingredients = props.ingredients;
     let ingredientName = '';
@@ -106,9 +106,11 @@ function Medium_Recipes(props) {
                                 <Card.Text className="text">
                                     {recipes.ingredients.map((ingredient) => (
                                         <div key={ingredient.id}>
-                                            {findIngredient(ingredient.id).name}{' '}
-                                            {ingredient.amount}{' '}
-                                            {ingredient.unit}
+                                            <li>
+                                                {findIngredient(ingredient.id).name}{' '}
+                                                {ingredient.amount}{' '}
+                                                {ingredient.unit}
+                                            </li>
                                         </div>
                                     ))}
                                 </Card.Text>
@@ -121,4 +123,4 @@ function Medium_Recipes(props) {
     );
 }
 
-export default Medium_Recipes;
+export default Recipes;

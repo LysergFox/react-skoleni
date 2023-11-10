@@ -90,3 +90,14 @@ tr:nth-child(even) {
     background-color: #7eb1af;
 }
 
+
+@media screen and (max-width: 768px) {
+    .card {
+        width: 90%; /* Adjust width for smaller screens */
+        margin: 1rem auto; /* Center-align and add top and bottom margin */
+    }
+    .card:first-child {
+        margin-top: 4rem; /* Add a different top margin for the first card */
+    }
+}
+

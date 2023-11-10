@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import ModalColor from './Components/ModalColor';
-import Header from './Components/Header';
-import Footer from './Components/Footer';
-import MediumRecipes from './recipes/Medium_recipes';
+import ModalColor from './components/ModalColor';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import MediumRecipes from './components/Recipes';
 import './styles/SvgSprinner.css';
 
 function App() {
@@ -64,14 +64,19 @@ function App() {
 
     return (
         <div className="app-container">
-            <Header searchTerm={searchTerm} onSearch={handleSearch} toggleViewMode={toggleViewMode}/>
-
-            <div className="recipe-container">
-                <div className="content">
-                    {getChild()}
+            <Header searchTerm={searchTerm} onSearch={handleSearch} toggleViewMode={toggleViewMode} ingredients={ingredientsLoadCall.data}/>
+            <div class="row">
+                <div
+                    class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
+                    style={{ paddingBottom: "16px" }}
+                >
+                    <div className="recipe-container">
+                        <div className="content">
+                            {getChild()}
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <Footer toggleColorTheoryModal={toggleColorTheoryModal} />
             <ModalColor show={showColorTheoryModal} onClose={toggleColorTheoryModal} />
         </div>

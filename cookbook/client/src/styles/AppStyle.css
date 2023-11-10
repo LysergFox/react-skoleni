@@ -6,7 +6,7 @@
 }
 
 .recipe-container {
-    flex: 1;
+    display: flex;
     overflow-y: auto;
     margin-top: 80px;
     margin-left: 60px;
@@ -47,6 +47,8 @@
     color: #344b56;
     border-radius: 5px;
     margin-left: auto;
+    right: 0;
+    top: 0;
     *::-webkit-input-placeholder { /* WebKit, Blink, Edge */
         color:    #60849a;
     }
@@ -89,6 +91,8 @@
     height: 30px;
     margin-left: 1290px;
     border: none !important;
+    right: 0;
+    top: 0;
 }
 
 .button-view:hover{
@@ -125,3 +129,4 @@
 .copyright{
     margin: 1rem;
 }
+
