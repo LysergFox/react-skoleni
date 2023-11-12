@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import IngredientList from "./IngredientList";
 
 function RecipeTableList(props) {
     return (
@@ -17,7 +18,16 @@ function RecipeTableList(props) {
                     <tr key={recipe.id}>
                         <td>{recipe.name}</td>
                         <td>{recipe.description}</td>
-                        <td>TODO Ingredients</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <IngredientList
+                                        ingredientList={recipe.ingredients}
+                                        ingredientsList={props.ingredientsList}
+                                    />
+                                </li>
+                            </ul>
+                        </td>
                     </tr>
                 );
             })}
