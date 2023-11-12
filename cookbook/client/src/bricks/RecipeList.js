@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useContext, useMemo, useState} from "react";
 import RecipeGridList from "./RecipeGridList";
 import RecipeTableList from "./RecipeTableList";
 
@@ -11,11 +11,13 @@ import {mdiMagnify, mdiPlus, mdiTable, mdiViewGridOutline} from "@mdi/js";
 
 import styles from "../css/recipeList.module.css";
 import RecipeForm from "./RecipeForm";
+import UserContext from "../UserProvider";
 
 function RecipeList(props) {
     const [viewType, setViewType] = useState("grid");
     const [searchBy, setSearchBy] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const { isAuthorized } = useContext(UserContext);
 
     const handleOpenRecipeModal = () => {
         setShowModal(true);
@@ -50,15 +52,17 @@ function RecipeList(props) {
                     <Navbar.Collapse style={{ justifyContent: "right" }}>
                         <div>
                             <Form className="d-flex" onSubmit={handleSearch}>
-                                <Button
-                                    style={{ marginRight: "8px" }}
-                                    className={"d-none d-md-block"}
-                                    variant="outline-primary"
-                                    onClick={handleOpenRecipeModal}
-                                >
-                                    <Icon size={1} path={mdiPlus} />{" "}
-                                    {"Vytvorit recept"}
-                                </Button>
+                                {isAuthorized && (
+                                    <Button
+                                        style={{ marginRight: "8px" }}
+                                        className={"d-none d-md-block"}
+                                        variant="outline-primary"
+                                        onClick={handleOpenRecipeModal}
+                                    >
+                                        <Icon size={1} path={mdiPlus} />{" "}
+                                        {"Vytvorit recept"}
+                                    </Button>
+                                    )}
                                 <Form.Control
                                     id={"searchInput"}
                                     style={{ maxWidth: "150px" }}

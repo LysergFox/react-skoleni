@@ -8,8 +8,11 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { Outlet, useNavigate } from "react-router-dom";
 import {mdiAlertOctagonOutline, mdiLoading} from "@mdi/js";
 import Icon from "@mdi/react";
+import UserContext from "./UserProvider";
+import Button from "react-bootstrap/Button";
 
 function App(){
+    const { isAuthorized, toggleAuthorization } = React.useContext(UserContext);
     const [listRecipeCall, setListRecipeCall] = useState({
         state: "pending",
     });
@@ -85,6 +88,9 @@ function App(){
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
+                                <Button onClick={toggleAuthorization} variant={"success"}>
+                                    Toggle Authorization
+                                </Button>
                                 {getRecipeListDropdown()}
                                 <Nav.Link onClick={() => navigate("/recipeList")}>
                                     Recepty

@@ -17,6 +17,7 @@ function RecipeTableList(props) {
                     <tr key={recipe.id}>
                         <td>{recipe.name}</td>
                         <td>{recipe.description}</td>
+                        <td>TODO Ingredients</td>
                     </tr>
                 );
             })}

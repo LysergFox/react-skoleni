@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import Card from 'react-bootstrap/Card';
 import Icon from "@mdi/react";
 import { mdiChefHat, mdiText } from "@mdi/js";
 import IngredientList from "./IngredientList";
 import RecipeForm from "./RecipeForm";
 import Button from "react-bootstrap/Button";
+import UserContext from "../UserProvider";
 
 function Recipe(props) {
     const [showEditModal, setShowEditModal] = useState(false);
+    const { isAuthorized } = useContext(UserContext);
 
     const handleEditClick = () => {
         if (props.recipe) {
@@ -54,7 +56,9 @@ function Recipe(props) {
                             ingredientsList={props.ingredientsList}
                         />
                     </div>
-                    <Button onClick={handleEditClick}>Upravit recept</Button>
+                    {isAuthorized && (
+                        <Button onClick={handleEditClick}>Upravit recept</Button>
+                    )}
 
                     <RecipeForm
                         recipe={props.recipe}
