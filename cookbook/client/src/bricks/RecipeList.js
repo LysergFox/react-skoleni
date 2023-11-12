@@ -15,10 +15,10 @@ import RecipeForm from "./RecipeForm";
 function RecipeList(props) {
     const [viewType, setViewType] = useState("grid");
     const [searchBy, setSearchBy] = useState("");
-    const [showRecipeModal, setShowRecipeModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const handleOpenRecipeModal = () => {
-        setShowRecipeModal(true);
+        setShowModal(true);
     };
 
     const filteredRecipeList = useMemo(() => {
@@ -76,7 +76,7 @@ function RecipeList(props) {
                                 </Button>
                                 <Button
                                     style={{ marginRight: "8px" }}
-                                    className={"d-none d-md-block"}
+                                    className={"d-block d-md-block"}
                                     variant="outline-primary"
                                     onClick={() =>
                                         setViewType("grid")
@@ -87,7 +87,7 @@ function RecipeList(props) {
                                 </Button>
                                 <Button
                                     style={{ marginRight: "8px" }}
-                                    className={"d-none d-md-block"}
+                                    className={"d-block d-md-block"}
                                     variant="outline-primary"
                                     onClick={() =>
                                         setViewType("grid-small")
@@ -128,14 +128,15 @@ function RecipeList(props) {
                     </div>
                 ) : (
                     <div style={{ margin: "16px auto", textAlign: "center" }}>
-                        Nejsou žádní studenti ke zobrazení
+                        Nejsou zadne recepty ke zobrazeni
                     </div>
                 )}
             </div>
             <RecipeForm
-                show={showRecipeModal}
-                onHide={() => setShowRecipeModal(false)}
-                ingredientsList={props.ingredientsList}
+                recipe={''}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                ingredientList={props.ingredientsList}
             />
         </div>
     );
