@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
 
 const defaultIngredient = { id: "", amount: "", unit: "" };
 
-const RecipeForm = ({ recipe, showModal, setShowModal, ingredientList }) => {
+const RecipeForm = ({ recipe, showModal, setShowModal, ingredientList, handleUpdateRecipeList }) => {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         imgUri: "",
         ingredients: [],
     });
+
     const [validated, setValidated] = useState(false);
     const [recipeAddCall, setRecipeAddCall] = useState({ state: "inactive" });
 
@@ -68,17 +69,25 @@ const RecipeForm = ({ recipe, showModal, setShowModal, ingredientList }) => {
             const payload = {
                 ...formData,
             };
+
+            if (recipe) {
+                payload.id = recipe.id;
+            }
+
             console.log(payload);
             setRecipeAddCall({ state: "pending" });
+
             try {
-                const result = await fetch(`http://localhost:3000/recipe/create`, {
+                const result = await fetch(`http://localhost:3000/recipe/${recipe ? "update" : "create"}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(payload),
                 });
+
                 const data = await result.json();
+
                 if (result.status >= 400) {
                     setRecipeAddCall({ state: "error", error: data });
                 } else {
@@ -87,20 +96,44 @@ const RecipeForm = ({ recipe, showModal, setShowModal, ingredientList }) => {
                 }
             } catch (error) {
                 console.error("Error:", error);
+
                 if (error instanceof Response) {
                     const responseData = await error.json();
                     console.log("Response Data:", responseData);
                 }
+
                 setRecipeAddCall({ state: "error", error: { errorMessage: error.message } });
             }
         }
+
         setValidated(true);
     };
+
 
     const handleCloseModal = () => {
         setShowModal(false);
         setFormData({ name: "", description: "", imgUri: "", ingredients: [] });
+        handleUpdateRecipeList();
     };
+
+
+    useEffect(() => {
+        if (recipe) {
+            setFormData({
+                name: recipe.name || "",
+                description: recipe.description || "",
+                imgUri: recipe.imgUri || "",
+                ingredients: recipe.ingredients ? [...recipe.ingredients] : [],
+            });
+        } else {
+            setFormData({
+                name: "",
+                description: "",
+                imgUri: "",
+                ingredients: [],
+            });
+        }
+    }, [recipe]);
 
     return (
         <>
