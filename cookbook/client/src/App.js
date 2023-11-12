@@ -1,84 +1,104 @@
-import React, {useEffect, useState} from 'react';
-import ModalColor from './components/ModalColor';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import MediumRecipes from './components/Recipes';
-import './styles/SvgSprinner.css';
+import "./App.css";
+import React, {useEffect, useState} from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import {Container, Nav} from "react-bootstrap";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import { Outlet, useNavigate } from "react-router-dom";
+import {mdiAlertOctagonOutline, mdiLoading} from "@mdi/js";
+import Icon from "@mdi/react";
 
-function App() {
-    const [showColorTheoryModal, setShowColorTheoryModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [repipesLoadCall, setRepipesLoadCall] = useState(
-        {state: "pending"}
-    );
-    const [ingredientsLoadCall, setIngredientsLoadCall] = useState(
-        {state: "pending"}
-    );
-    const toggleColorTheoryModal = () => {
-        setShowColorTheoryModal(!showColorTheoryModal);
-    };
-    const handleSearch = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const [viewMode, setViewMode] = useState('cards');
-    const toggleViewMode = () => {
-        setViewMode(viewMode === 'cards' ? 'table' : 'cards');
-    };
+function App(){
+    const [listRecipeCall, setListRecipeCall] = useState({
+        state: "pending",
+    });
+    let navigate = useNavigate();
 
     useEffect(() => {
-        if (repipesLoadCall.state === "pending") {
-            fetch('//localhost:3000/recipe/list')
-                .then((response) => response.json())
-                .then((data) => {
-                    setRepipesLoadCall({state: "success", data: data});
-                })
-                .catch((error) => {
-                    setRepipesLoadCall({state: "error", error: error});
-                });
-        }
-        if (ingredientsLoadCall.state === "pending") {
-            fetch('//localhost:3000/ingredient/list')
-                .then((response) => response.json())
-                .then((data) => {
-                    setIngredientsLoadCall({state: "success", data: data});
-                })
-                .catch((error) => {
-                    setIngredientsLoadCall({state: "error", error: error});
-                });
-        }
+        fetch(`http://localhost:3000/recipe/list`, {
+            method: "GET",
+        }).then(async (response) => {
+            const responseJson = await response.json();
+            if (response.status >= 400) {
+                setListRecipeCall({ state: "error", error: responseJson });
+            } else {
+                setListRecipeCall({ state: "success", data: responseJson });
+            }
+        });
     }, []);
 
-    function getChild() {
-        switch (repipesLoadCall.state && ingredientsLoadCall.state) {
+    function getRecipeListDropdown() {
+        switch (listRecipeCall.state) {
             case "pending":
-               return <svg className="spinner" viewBox="0 0 50 50">
-                        <circle className="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-               </svg>
-            case "error":
-                return <div>Error: {repipesLoadCall.error.message}</div>;
+                return (
+                    <Nav.Link disabled={true}>
+                        <Icon size={1} path={mdiLoading} spin={true} /> Recipe List
+                    </Nav.Link>
+                );
             case "success":
-                return <MediumRecipes searchTerm={searchTerm} recipes={repipesLoadCall.data} ingredients={ingredientsLoadCall.data} viewMode={viewMode}/>;
+                return (
+                    <NavDropdown title="Select Recipe" id="navbarScrollingDropdown">
+                        {listRecipeCall.data.map((recipe) => {
+                            return (
+                                <NavDropdown.Item
+                                    onClick={() =>
+                                        navigate("/recipeDetail?id=" + recipe.id)
+                                    }
+                                >
+                                    {recipe.name}
+                                </NavDropdown.Item>
+                            );
+                        })}
+                    </NavDropdown>
+                );
+            case "error":
+                return (
+                    <div>
+                        <Icon size={1} path={mdiAlertOctagonOutline} /> Error
+                    </div>
+                );
+            default:
+                return null;
         }
     }
 
+    return(
+        <div className="App">
+            <Navbar
+                fixed="top"
+                expand={"sm"}
+                className="mb-3"
+                bg="dark"
+                variant="dark"
+            >
+                <Container fluid>
+                    <Navbar.Brand onClick={() => navigate("/")}>
+                        Simple Kitchen
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+                    <Navbar.Offcanvas id={`offcanvasNavbar-expand-sm`}>
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
+                                Simple Kitchen
+                            </Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <Nav className="justify-content-end flex-grow-1 pe-3">
+                                {getRecipeListDropdown()}
+                                <Nav.Link onClick={() => navigate("/recipeList")}>
+                                    Recepty
+                                </Nav.Link>
+                                <Nav.Link onClick={() => navigate("/ingredientList")}>
+                                    Ingredience
+                                </Nav.Link>
+                            </Nav>
+                        </Offcanvas.Body>
+                    </Navbar.Offcanvas>
+                </Container>
+            </Navbar>
 
-    return (
-        <div className="app-container">
-            <Header searchTerm={searchTerm} onSearch={handleSearch} toggleViewMode={toggleViewMode} ingredients={ingredientsLoadCall.data}/>
-            <div class="row">
-                <div
-                    class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
-                    style={{ paddingBottom: "16px" }}
-                >
-                    <div className="recipe-container">
-                        <div className="content">
-                            {getChild()}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <Footer toggleColorTheoryModal={toggleColorTheoryModal} />
-            <ModalColor show={showColorTheoryModal} onClose={toggleColorTheoryModal} />
+            <Outlet />
         </div>
     );
 }
